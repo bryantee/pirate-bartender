@@ -1,5 +1,15 @@
+$(document).ready(function(){
+  $('.questions').on('click', 'button', function(e) {
+    e.preventDefault();
+    console.log("Button clicked to submit preferences.");
+  });
+  renderQuestions(questions, $('.questions'));
+});
+
+// Let's setup some variables
 var questions = []; // Questions to ask user in UI
 var preference = {}; // User preference info that from use answers to questions
+
 var thePantry = new Pantry( // Container for ingredients, these are all array arguments
   // strong
   [
@@ -33,6 +43,27 @@ var thePantry = new Pantry( // Container for ingredients, these are all array ar
   ]
 );
 
+// Add some questions to the questions array
+questions.push(new Question("strong", "Do ya like em strong?"));
+questions.push(new Question("salty", "Do ya lik em salty like the sea?"));
+questions.push(new Question("bitter", "Is it bitter yer after?"));
+questions.push(new Question("sweet", "What about a little sweetness, las?"));
+questions.push(new Question("fruity", "Oh, you like it fruity doncha?"));
+
+function renderQuestions(questions, parentEl){
+var div = "";
+  for (var i = 0; i < questions.length; i++) {
+    var questionCount = i + 1;
+    var childDiv ="";
+    childDiv += "<div class='form-group'><div class='question'>" + questions[i].question + "</div>";
+    childDiv +=  "<select class='form-control'><option>Yes</option><option>No</option></select>";
+    childDiv += "</div>" // close form-group div
+    div += childDiv;
+  }
+  div += "<button type='submit' class='btn btn-default'>Make me a drink, lad</button>";
+  parentEl.html(div);
+}
+
 // Question constructor
 function Question(type, question) {
   this.type = type;
@@ -58,10 +89,3 @@ function Ingredient(type, ingredient) {
 function Bartender(){
   this.createDrink = function() {};
 }
-
-// Add some questions to the questions array
-questions.push(new Question("strong", "Do ya like em strong?"));
-questions.push(new Question("salty", "Do ya lik em salty like the sea?"));
-questions.push(new Question("bitter", "Is it bitter yer after?"));
-questions.push(new Question("sweet", "What about a little sweetness, las?"));
-questions.push(new Question("fruity", "Oh, you like it fruity doncha?"));
