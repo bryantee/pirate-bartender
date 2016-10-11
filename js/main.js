@@ -10,8 +10,7 @@ $(document).ready(function(){
 // Let's setup some variables
 var questions = []; // Questions to ask user in UI
 var preference = []; // User preference info that from use answers to questions
-
-var theBarTender = new Bartender();
+var theBarTender = new Bartender(); // Instantiate the bartender
 
 var thePantry = new Pantry( // Container for ingredients, these are all array arguments
   // strong
@@ -68,7 +67,7 @@ var div = "";
   parentEl.html(div);
 }
 
-//
+// Used to get the response data and push user pref to preference array as needed
 function evaluateResponseAndSetPreferences(){
   $('select').each(function() {
     var userPref = $(this).val().toLowerCase();
@@ -76,9 +75,10 @@ function evaluateResponseAndSetPreferences(){
   });
 }
 
+// Helper function to be used by bartender to serve up the dirnk
+// (write to html div)
 function serverDrink(drink, parentEl) {
   parentEl.html("Here's your drink with a " + drink);
-
 }
 
 // Question constructor
@@ -111,6 +111,6 @@ function Bartender(){
       var randomNumber = Math.floor((Math.random() * (ingredients.length - 1)));
       drink.push(ingredients[randomNumber].ingredient);
     })
-    return drink.join(" and ");
+    return drink.join(" and "); // TODO: add some logic to prevent "and and and and"
   };
 }
