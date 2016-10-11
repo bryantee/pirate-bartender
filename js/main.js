@@ -2,15 +2,29 @@ $(document).ready(function(){
   $('.questions').on('click', 'button', function(e) {
     e.preventDefault();
     evaluateResponseAndSetPreferences();
-    serverDrink(theBarTender.createDrink(preference), $('.drink'));
+    serverDrink(theBarTender.createDrink(preference), nameDrink(adjectives, nouns), $('.drink'));
   });
   renderQuestions(questions, $('.questions'));
 });
 
 // Let's setup some variables
 var questions = []; // Questions to ask user in UI
-var preference = []; // User preference info that from use answers to questions
+var preference = []; // User preference info that comes from user answers to questions
 var theBarTender = new Bartender(); // Instantiate the bartender
+// some nouns and adjectives used to name drinks:
+var adjectives = [
+  "Curvy",
+  "Chubby",
+  "Slippery",
+  "Shallow",
+  "Crusty"
+]
+var nouns = [
+  "Bowling-pin",
+  "Cave Monster",
+  "Barnacle",
+  "Scab"
+]
 
 var thePantry = new Pantry( // Container for ingredients, these are all array arguments
   // strong
@@ -77,8 +91,11 @@ function evaluateResponseAndSetPreferences(){
 
 // Helper function to be used by bartender to serve up the dirnk
 // (write to html div)
-function serverDrink(drink, parentEl) {
-  parentEl.html("Here's your drink with a " + drink);
+function serverDrink(ingredientList, drink, parentEl) {
+  var div = '';
+  div += "<h3>Here's your drink with </h3>" + "<p>" + ingredientList + "</p>";
+  div += "<p>We call it the <span class='drink-name'>" + drink + ".</span></p>";
+  parentEl.html(div);
 }
 
 // Question constructor
@@ -111,6 +128,17 @@ function Bartender(){
       var randomNumber = Math.floor((Math.random() * (ingredients.length - 1)));
       drink.push(ingredients[randomNumber].ingredient);
     })
-    return drink.join(" and "); // TODO: add some logic to prevent "and and and and"
+    if (drink.length <= 2) {
+      return "a " + drink.join(" and a ");
+    } else {
+      return "a " + drink.splice(0, drink.length - 1).join(", a ") + " and a " + drink[drink.length - 1]; // TODO: add some logic to prevent "and and and and"
+    }
   };
+}
+
+// Names drink, takes two arguments that are arrays and returns a string for drink name
+function nameDrink(adjectives, nouns) {
+  var randomAdjective = adjectives[Math.floor((Math.random() * (adjectives.length - 1)))];
+  var randomNoun = nouns[Math.floor((Math.random() * (adjectives.length - 1)))];
+  return randomAdjective + " " + randomNoun;
 }
