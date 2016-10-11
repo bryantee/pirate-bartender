@@ -9,8 +9,9 @@ $(document).ready(function(){
 
 // Let's setup some variables
 var questions = []; // Questions to ask user in UI
-var preference = []; // User preference info that from use answers to questions
+var preference = []; // User preference info that comes from user answers to questions
 var theBarTender = new Bartender(); // Instantiate the bartender
+// some nouns and adjectives used to name drinks:
 var adjectives = [
   "Curvy",
   "Chubby",
@@ -127,7 +128,6 @@ function Bartender(){
       var randomNumber = Math.floor((Math.random() * (ingredients.length - 1)));
       drink.push(ingredients[randomNumber].ingredient);
     })
-    console.log(drink);
     if (drink.length <= 2) {
       return "a " + drink.join(" and a ");
     } else {
@@ -136,6 +136,7 @@ function Bartender(){
   };
 }
 
+// Names drink, takes two arguments that are arrays and returns a string for drink name
 function nameDrink(adjectives, nouns) {
   var randomAdjective = adjectives[Math.floor((Math.random() * (adjectives.length - 1)))];
   var randomNoun = nouns[Math.floor((Math.random() * (adjectives.length - 1)))];
