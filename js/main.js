@@ -1,3 +1,8 @@
+var $ = require('jquery');
+window.jQuery = $;
+require('bootstrap');
+
+
 $(document).ready(function(){
   $('.questions').on('click', 'button', function(e) {
     e.preventDefault();
