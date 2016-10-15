@@ -1,6 +1,7 @@
-var $ = require('jquery');
+import $ from 'jquery';
 window.jQuery = $;
 require('bootstrap');
+import {Question, Pantry, Ingredient, Bartender} from './modules';
 
 
 $(document).ready(function(){
@@ -15,7 +16,6 @@ $(document).ready(function(){
 // Let's setup some variables
 var questions = []; // Questions to ask user in UI
 var preference = []; // User preference info that comes from user answers to questions
-var theBarTender = new Bartender(); // Instantiate the bartender
 // some nouns and adjectives used to name drinks:
 var adjectives = [
   "Curvy",
@@ -64,6 +64,8 @@ var thePantry = new Pantry( // Container for ingredients, these are all array ar
   ]
 );
 
+var theBarTender = new Bartender(thePantry); // Instantiate the bartender
+
 // Add some questions to the questions array
 questions.push(new Question("strong", "Do ya like em strong?"));
 questions.push(new Question("salty", "Do ya lik em salty like the sea?"));
@@ -101,44 +103,6 @@ function serverDrink(ingredientList, drink, parentEl) {
   div += "<h3>Here's your drink with </h3>" + "<p>" + ingredientList + "</p>";
   div += "<p>We call it the <span class='drink-name'>" + drink + ".</span></p>";
   parentEl.html(div);
-}
-
-// Question constructor
-function Question(type, question) {
-  this.type = type;
-  this.question = question;
-}
-
-// Pantry constructor that takes parameters that are arrays of ingredients
-function Pantry(strongIng, saltyIng, bitterIng, sweetIng, fruityIng) {
-  this.strong = strongIng;
-  this.salty = saltyIng;
-  this.bitter = bitterIng;
-  this.sweet = sweetIng;
-  this.fruity = fruityIng;
-}
-
-// Ingredient contructor
-function Ingredient(type, ingredient) {
-  this.ingredient = ingredient;
-  this.type = type;
-}
-
-// Bartender constructor, now with all new functionality!
-function Bartender(){
-  this.createDrink = function(preference) {
-    var drink = [];
-    preference.forEach(function(value){
-      var ingredients = thePantry[value];
-      var randomNumber = Math.floor((Math.random() * (ingredients.length - 1)));
-      drink.push(ingredients[randomNumber].ingredient);
-    })
-    if (drink.length <= 2) {
-      return "a " + drink.join(" and a ");
-    } else {
-      return "a " + drink.splice(0, drink.length - 1).join(", a ") + " and a " + drink[drink.length - 1]; // TODO: add some logic to prevent "and and and and"
-    }
-  };
 }
 
 // Names drink, takes two arguments that are arrays and returns a string for drink name
